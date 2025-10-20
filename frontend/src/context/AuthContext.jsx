@@ -21,24 +21,32 @@ export function AuthProvider({ children }) {
         .from('users')
         .select('role, barber_id')
         .eq('id', userId)
-        .single()
+        .maybeSingle()
       
       if (mounted) {
         if (error) {
           console.error('Error loading user profile:', error)
-          // If user doesn't exist in users table, create them as admin
-          const { error: insertError } = await supabase
+          setUserProfile(null)
+          return
+        }
+
+        if (!data) {
+          // Create minimal profile safely using upsert on id
+          const { data: sessionData } = await supabase.auth.getSession()
+          const email = sessionData?.session?.user?.email || null
+          const payload = { id: userId, role: 'barber' }
+          if (email) payload.email = email
+          const { error: upsertError } = await supabase
             .from('users')
-            .insert({ id: userId, email: '', role: 'admin', barber_id: null })
-          
-          if (insertError) {
-            console.error('Error creating user:', insertError)
+            .upsert(payload, { onConflict: 'id' })
+          if (upsertError) {
+            console.error('Error creating user profile:', upsertError)
             setUserProfile({ role: 'barber', barber_id: null })
           } else {
-            setUserProfile({ role: 'admin', barber_id: null })
+            setUserProfile({ role: 'barber', barber_id: null })
           }
         } else {
-          setUserProfile(data || { role: 'admin', barber_id: null })
+          setUserProfile(data)
         }
       }
     }

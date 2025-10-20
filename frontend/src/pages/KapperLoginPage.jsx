@@ -59,7 +59,7 @@ export default function KapperLoginPage() {
           .from('users')
           .select('role')
           .eq('id', data.user.id)
-          .single()
+          .maybeSingle()
 
         console.log('User profile check:', { userProfile, profileError })
 
@@ -70,7 +70,20 @@ export default function KapperLoginPage() {
           return
         }
 
-        if (!userProfile || userProfile.role !== 'barber') {
+        if (!userProfile) {
+          // Create minimal barber profile via upsert
+          const payload = { id: data.user.id, role: 'barber' }
+          if (data.user.email) payload.email = data.user.email
+          const { error: upsertErr } = await freshSupabase
+            .from('users')
+            .upsert(payload, { onConflict: 'id' })
+          if (upsertErr) {
+            console.error('Profile upsert error:', upsertErr)
+            setError('Kon geen gebruikersprofiel aanmaken. Probeer opnieuw.')
+            setLoading(false)
+            return
+          }
+        } else if (userProfile.role !== 'barber') {
           console.log('User is not a barber, signing out')
           await freshSupabase.auth.signOut()
           setError('Alleen kappers kunnen hier inloggen.')
