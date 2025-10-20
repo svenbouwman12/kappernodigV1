@@ -1,6 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm install",
+  "ignoreCommand": "CHANGED=$(git diff --name-only $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA || true); echo \"$CHANGED\" | grep -qE '^backend/' && exit 1 || { echo 'No backend changes'; exit 0; }",
   "outputDirectory": ".",
   "installCommand": "npm install",
   "builds": [
