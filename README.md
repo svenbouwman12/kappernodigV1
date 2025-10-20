@@ -48,21 +48,39 @@ Backend draait op: http://localhost:3001
 
 ## Environment Variables
 
-### Frontend (.env)
+### Voor Lokale Ontwikkeling
+Kopieer `env.example` naar `.env` in de root directory en vul de waarden in:
+
+```bash
+cp env.example .env
 ```
+
+### Frontend Environment Variables
+```bash
+# Voor lokale ontwikkeling
 VITE_API_URL=http://localhost:3001
-VITE_SUPABASE_URL=your_supabase_url
+
+# Voor productie (na backend deployment)
+VITE_API_URL=https://your-backend-url.vercel.app
+
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-### Backend (.env)
-```
+### Backend Environment Variables
+```bash
 PORT=3001
-SUPABASE_URL=your_supabase_url
+SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-GEOCODE_JOB_TOKEN=your_geocode_token
-OPENCAGE_API_KEY=your_opencage_key
+GEOCODE_JOB_TOKEN=your_secure_random_token
+OPENCAGE_API_KEY=your_opencage_key  # Optioneel
 ```
+
+### Waar vind je deze waarden?
+- **Supabase**: Ga naar je project → Settings → API
+- **OpenCage**: Registreer op [opencagedata.com](https://opencagedata.com) (optioneel)
+- **Geocode Token**: Maak een willekeurige string voor authenticatie
 
 ## Deployment op Vercel
 
