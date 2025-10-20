@@ -1,6 +1,5 @@
 # Ignore frontend files for backend deployment
 frontend/
-*.sql
 .DS_Store
 node_modules/
 .env
