@@ -2,7 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "ignoreCommand": "CHANGED=$(git diff --name-only $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA || true); echo \"$CHANGED\" | grep -qE '^frontend/' && exit 1 || { echo 'No frontend changes'; exit 0; }",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
