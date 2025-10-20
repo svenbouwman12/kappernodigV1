@@ -1,6 +1,0 @@
-# Ignore frontend files for backend deployment
-frontend/
-.DS_Store
-node_modules/
-.env
-.env.local
