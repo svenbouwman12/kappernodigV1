@@ -102,6 +102,8 @@ OPENCAGE_API_KEY=your_opencage_key  # Optioneel
 - ✅ Monorepo structuur klaar
 - ✅ Vercel configuratie geoptimaliseerd
 - ✅ Environment variables gedocumenteerd
+- ✅ Root vercel.json toegevoegd voor backend deployment
+- ✅ Vercel project settings geconfigureerd (Root Directory: backend)
 
 ### Environment Variables voor Production
 
